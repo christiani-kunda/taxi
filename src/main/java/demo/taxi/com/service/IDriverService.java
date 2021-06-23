@@ -1,7 +1,9 @@
 package demo.taxi.com.service;
 
-import demo.taxi.com.util.ResponseObjectDto;
+import demo.taxi.com.model.Driver;
+import demo.taxi.com.util.Response;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -11,12 +13,12 @@ import java.util.UUID;
  */
 public interface IDriverService {
 
-	ResponseObjectDto findDriverById(UUID driverId);
+	Response<Driver> findDriverById(UUID driverId);
 
-	ResponseObjectDto findAllDrivers();
+	Response<List<Driver>> findAllDrivers();
 
-	ResponseObjectDto findAllAvailableDrivers();
+	Response<List<Driver>> findAllAvailableDrivers();
 
-	ResponseObjectDto findAllAvailableDriversByLocation(String location);
+	Response<List<Driver>> findAllAvailableDriversByDistance(double distance, String location);
 
 }

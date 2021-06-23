@@ -38,6 +38,8 @@ public class Driver implements Serializable {
 
 	private String location;
 
+	private EDriverState state;
+
 	public UUID getId() {
 		return id;
 	}
@@ -84,5 +86,13 @@ public class Driver implements Serializable {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public EDriverState getState() {
+		return state;
+	}
+
+	public void setState(EDriverState state) {
+		this.state = state;
 	}
 }

@@ -1,7 +1,15 @@
 package demo.taxi.com.service;
 
-import demo.taxi.com.util.ResponseObjectDto;
+import demo.taxi.com.model.Driver;
+import demo.taxi.com.model.EDriverState;
+import demo.taxi.com.repository.IDriverRepository;
+import demo.taxi.com.util.DistanceCalculator;
+import demo.taxi.com.util.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -9,25 +17,41 @@ import java.util.UUID;
  *
  * @author Christian Iradukunda
  */
+@Service
 public class DriverService implements IDriverService {
 
+	@Autowired
+	private IDriverRepository driverRepository;
+
 	@Override
-	public ResponseObjectDto findDriverById(UUID driverId) {
-		return null;
+	public Response<Driver> findDriverById(UUID driverId) {
+		try{
+			return new Response<>(driverRepository.findById(driverId).orElseThrow(() -> new Exception("Driver not found")));
+		}catch (Exception ex){
+			return new Response<>(ex, "Driver not found");
+		}
 	}
 
 	@Override
-	public ResponseObjectDto findAllDrivers() {
-		return null;
+	public Response<List<Driver>> findAllDrivers() {
+		return new Response<>(driverRepository.findAll());
 	}
 
 	@Override
-	public ResponseObjectDto findAllAvailableDrivers() {
-		return null;
+	public Response<List<Driver>> findAllAvailableDrivers() {
+		return new Response<>(driverRepository.findDriversByState(EDriverState.AVAILABLE));
 	}
 
 	@Override
-	public ResponseObjectDto findAllAvailableDriversByLocation(String location) {
-		return null;
+	public Response<List<Driver>> findAllAvailableDriversByDistance(double distance, String location) {
+
+		List<Driver> driversList  = driverRepository.findDriversByState(EDriverState.AVAILABLE);
+		List<Driver> newListOfDrivers = new ArrayList<>();
+		for(Driver driver : driversList){
+			if(DistanceCalculator.calculateDistance(driver.getLocation(), location) <= distance){
+				newListOfDrivers.add(driver);
+			}
+		}
+		return new Response<>(newListOfDrivers);
 	}
 }
