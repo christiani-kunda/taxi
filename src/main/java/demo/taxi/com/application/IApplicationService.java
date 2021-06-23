@@ -1,7 +1,10 @@
 package demo.taxi.com.application;
 
-import demo.taxi.com.util.ResponseObjectDto;
+import demo.taxi.com.model.Driver;
+import demo.taxi.com.model.Trip;
+import demo.taxi.com.util.Response;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -11,9 +14,9 @@ import java.util.UUID;
  */
 public interface IApplicationService {
 
-	ResponseObjectDto getClosestDriversByRider(int number);
+	Response<List<Driver>> getClosestDriversByRider(UUID riderId);
 
-	ResponseObjectDto createTrip(UUID riderId, UUID driverId);
+	Response<Trip> createTrip(UUID riderId, UUID driverId, String destinationLocation);
 
-	ResponseObjectDto completeTrip(int tripNumber);
+	Response<Trip> completeTrip(UUID tripId);
 }
