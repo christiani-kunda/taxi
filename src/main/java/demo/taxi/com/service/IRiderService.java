@@ -1,7 +1,9 @@
 package demo.taxi.com.service;
 
-import demo.taxi.com.util.ResponseObjectDto;
+import demo.taxi.com.model.Rider;
+import demo.taxi.com.util.Response;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -11,8 +13,8 @@ import java.util.UUID;
  */
 public interface IRiderService {
 
-	ResponseObjectDto findAllRiders();
+	Response<List<Rider>> findAllRiders();
 
-	ResponseObjectDto findRiderById(UUID riderId);
+	Response<Rider> findRiderById(UUID riderId);
 
 }
