@@ -35,9 +35,9 @@ public class Trip implements Serializable {
 	@UpdateTimestamp
 	private Date updatedAt;
 
-	private String initAdress;
+	private String fromLocation;
 
-	private String destination;
+	private String destinationLocation;
 
 	private ETripState state;
 
@@ -71,20 +71,20 @@ public class Trip implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public String getInitAdress() {
-		return initAdress;
+	public String getFromLocation() {
+		return fromLocation;
 	}
 
-	public void setInitAdress(String initAdress) {
-		this.initAdress = initAdress;
+	public void setFromLocation(String initAdress) {
+		this.fromLocation = initAdress;
 	}
 
-	public String getDestination() {
-		return destination;
+	public String getDestinationLocation() {
+		return destinationLocation;
 	}
 
-	public void setDestination(String destination) {
-		this.destination = destination;
+	public void setDestinationLocation(String destination) {
+		this.destinationLocation = destination;
 	}
 
 	public Driver getDriverId() {
