@@ -1,11 +1,16 @@
 package demo.taxi.com.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The Class DistanceCalculator.
  *
  * @author Christian Iradukunda
  */
 public class DistanceCalculator {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DistanceCalculator.class);
 
 	public static double calculateDistance(String initLocation, String destinationLocation){
 
@@ -17,6 +22,8 @@ public class DistanceCalculator {
 		double x2 = Double.parseDouble(destinationPoints[0]);
 		double y2 = Double.parseDouble(destinationPoints[1]);
 
-		return Math.round(Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)) * 1000d)/ 1000d;
+		double distance = Math.round(Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)) * 1000d)/ 1000d;
+		LOGGER.debug( "Distance is {}", distance);
+		return distance;
 	}
 }

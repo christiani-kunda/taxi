@@ -15,12 +15,12 @@ import demo.taxi.com.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * The Class ApplicationService.
@@ -56,10 +56,10 @@ public class ApplicationService implements IApplicationService {
 			}
 
 			Map<Driver, Double> sortedDriversDistance = new HashMap<>();
-			driversDistance.entrySet().stream().sorted(Map.Entry.comparingByValue())
+			driversDistance.entrySet().stream().sorted(Map.Entry.comparingByValue()).limit(3)
 					.forEachOrdered(x -> sortedDriversDistance.put(x.getKey(), x.getValue()));
 
-			List<Driver> closestDrivers = sortedDriversDistance.keySet().stream().sorted().limit(3).collect(Collectors.toList());
+			List<Driver> closestDrivers = new ArrayList<>(sortedDriversDistance.keySet());
 			return new Response<>(closestDrivers);
 		} catch (Exception ex){
 			return new Response<>(ex, "There has been error");
