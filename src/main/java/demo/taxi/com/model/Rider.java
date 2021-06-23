@@ -27,10 +27,10 @@ public class Rider implements Serializable {
 	private UUID id;
 
 	@CreationTimestamp
-	private Date createdAt;
+	private Date createdAt = new Date();
 
 	@UpdateTimestamp
-	private Date updatedAt;
+	private Date updatedAt = new Date();
 
 	private String fullName;
 
