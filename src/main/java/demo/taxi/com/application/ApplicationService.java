@@ -15,6 +15,7 @@ import demo.taxi.com.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +84,7 @@ public class ApplicationService implements IApplicationService {
 
 			// updating the drivers state to unavailable
 			driver.setState(EDriverState.UNAVAILABLE);
+			driver.setUpdatedAt(new Date());
 			driverRepository.save(driver);
 			return new Response<>(trip);
 		} catch (Exception ex){
@@ -96,6 +98,7 @@ public class ApplicationService implements IApplicationService {
 			Trip trip = tripRepository.findById(tripId).orElse(null);
 			assert trip != null;
 			trip.setState(ETripState.COMPLETED);
+			trip.setUpdatedAt(new Date());
 			trip = tripRepository.save(trip);
 
 			// updating the location of the driver and the passenger
@@ -103,10 +106,12 @@ public class ApplicationService implements IApplicationService {
 			Driver driver = trip.getDriver();
 
 			rider.setLocation(trip.getDestinationLocation());
+			rider.setUpdatedAt(new Date());
 			riderRepository.save(rider);
 
 			driver.setLocation(trip.getDestinationLocation());
 			driver.setState(EDriverState.AVAILABLE);
+			driver.setUpdatedAt(new Date());
 			driverRepository.save(driver);
 			return new Response<>(trip);
 		} catch (Exception ex){
