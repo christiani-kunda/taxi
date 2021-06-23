@@ -30,10 +30,10 @@ public class Trip implements Serializable {
 	private UUID id;
 
 	@CreationTimestamp
-	private Date createdAt;
+	private Date createdAt = new Date();
 
 	@UpdateTimestamp
-	private Date updatedAt;
+	private Date updatedAt = new Date();
 
 	private String fromLocation;
 
@@ -41,11 +41,13 @@ public class Trip implements Serializable {
 
 	private ETripState state;
 
-	private Integer tripNumber;
-
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "driver_id")
-	private Driver driverId;
+	private Driver driver;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "rider_id")
+	private Rider rider;
 
 	public UUID getId() {
 		return id;
@@ -87,12 +89,12 @@ public class Trip implements Serializable {
 		this.destinationLocation = destination;
 	}
 
-	public Driver getDriverId() {
-		return driverId;
+	public Driver getDriver() {
+		return driver;
 	}
 
-	public void setDriverId(Driver driverId) {
-		this.driverId = driverId;
+	public void setDriver(Driver driverId) {
+		this.driver = driverId;
 	}
 
 	public ETripState getState() {
@@ -103,11 +105,11 @@ public class Trip implements Serializable {
 		this.state = state;
 	}
 
-	public Integer getTripNumber() {
-		return tripNumber;
+	public Rider getRider() {
+		return rider;
 	}
 
-	public void setTripNumber(Integer tripNumber) {
-		this.tripNumber = tripNumber;
+	public void setRider(Rider riderId) {
+		this.rider = riderId;
 	}
 }

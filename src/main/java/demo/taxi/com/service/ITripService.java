@@ -1,6 +1,9 @@
 package demo.taxi.com.service;
 
-import demo.taxi.com.util.ResponseObjectDto;
+import demo.taxi.com.model.Trip;
+import demo.taxi.com.util.Response;
+
+import java.util.List;
 
 /**
  * The interface ITripService.
@@ -9,6 +12,6 @@ import demo.taxi.com.util.ResponseObjectDto;
  */
 public interface ITripService {
 
-	ResponseObjectDto getListOfActiveTrips();
+	Response<List<Trip>> getListOfActiveTrips();
 
 }
