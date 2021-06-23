@@ -6,28 +6,35 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
-public class ResponseObjectDto implements Serializable {
+public class Response<T> implements Serializable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResponseObjectDto.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Response.class);
 
     private Boolean status;
-    private Object data;
+    private T data;
     private String message;
 
-    public ResponseObjectDto(Exception exception){
+    public Response(Exception exception){
         LOGGER.error(ExceptionUtils.getStackTrace(exception));
         this.status = false;
         this.data = null;
         this.message = exception.getMessage();
     }
 
-    public ResponseObjectDto(Object data) {
+    public Response(Exception exception, String message){
+        LOGGER.error(ExceptionUtils.getStackTrace(exception));
+        this.status = false;
+        this.data = null;
+        this.message = message;
+    }
+
+    public Response(T data) {
         this.status = true;
         this.data = data;
         this.message = "SUCCESS";
     }
 
-    public ResponseObjectDto() {
+    public Response() {
 
     }
 
@@ -39,11 +46,11 @@ public class ResponseObjectDto implements Serializable {
         this.status = status;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
