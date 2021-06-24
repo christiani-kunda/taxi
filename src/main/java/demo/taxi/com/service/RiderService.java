@@ -6,7 +6,6 @@ import demo.taxi.com.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,13 +34,4 @@ public class RiderService implements IRiderService {
 		}
 	}
 
-	@PostConstruct
-	public void init(){
-		for(int i=1; i<=10; i ++){
-			Rider rider = new Rider();
-			rider.setLocation("" + (15+i) + "," + (65-i) + "");
-			rider.setFullName("rider name " + i);
-			riderRepository.save(rider);
-		}
-	}
 }
