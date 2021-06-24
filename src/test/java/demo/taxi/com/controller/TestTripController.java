@@ -41,7 +41,7 @@ class TestTripController {
 	void findAllTripsSecond(){
 		Response<List<Trip>> response = this.restTemplate.getForObject(this.getBaseUrl() + "/all-active-trips", Response.class);
 		assertThat(response.getStatus()).isTrue();
-		assertThat(response.getData().size()).isEqualTo(0);
+		assertThat(response.getData().size()).isEqualTo(3);
 	}
 	
 	private String getBaseUrl(){
