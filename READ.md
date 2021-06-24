@@ -1,121 +1,134 @@
 # TAXI Coding Challenge
 
-This was my interview code submission for a Taxi company.
+This was my interview code submission for a Taxi 24 company.
+
+## Description
+
+Taxi24 is a new startup based in Kigali. They would like to disrupt the taxi industry in Rwanda by providing a white-label solution to the
+existing taxi companies and hotels. Practically, they will build a set of APIs that other companies can use to manage their fleet of drivers
+and allocate drivers to passengers. The challenge is to build the below defined backend APIs.
 
 ## Requirements
 
-This project requires that PostgreSQL be installed.
+This project requires that PostgreSQL 10-12 be installed.
 
 
 ## Installation
 
-Before using this project, you'll need to have the Node Modules installed. Run the following:
+After cloning the project, you'll need to have the maven installed to build the project. Run the following:
 
 ```
-npm install
+mvn install
+```
+
+Build using the following command if you want to skips tests while building
+
+```
+mvn install -DskipTests
 ```
 
 Once that is done, you'll need to configure the project to connect to your Postgres database:
 
 ```
-export PGSQL_CONN="postgres://USER:PASS@HOST/DB"
+db = postgres
+username = postgres
+passowrd = root
 ```
 
-You'll also want to execute the contents of `schema.sql` to create the necessary DB table.
+You'll also want to execute the contents of `data.sql` in the resource folder before you start the server.
 
+## Running
 
-## Sample Data Server
+To start the server, you will need to run this command `mvn spring-boot:run` via the commandline
 
-This emits sample data following the criteria outlined in the "Dispatch Backend" document.
-It transmits data over a TCP socket, specified as the only argument to the script.
-
-It's not technically part of the project, but the project would be quite boring without it ;).
-If you were to actually examine the coordinates, you'd see a lot of drunk Taxi drivers changing directions erratically and driving in the bay.
-
-The service will start emitting simulation data as soon as the first client connects.
-
-```
-./emitter.js 2900
-```
-
-
-## Subscription Service
-
-This is the tool which consumes the data.
-It also provides an HTTP server for getting data.
-
-Incoming data is immediately put into a PgSQL table.
-Two connections are made, one for writes and one for reads, to maximize performance.
-
-```
-./service.js 2900 8000
-```
-
-
-### HTTP Endpoints
+## HTTP Endpoints
 
 The service provides three HTTP endpoints for answering the questions asked in the "Dispatch Backend" document.
 
+### DRIVERS
+#### Get a list of all drivers
 
-#### Count Trips within Geo-Rect
+	Method: GET
+    URL: localhost:8080/driver/all
 
-This will count all trips which happened within the specified Geo-Rect for the entire known history.
+#### Get a list of all available drivers
 
-The two points can be any two opposing corners of a rectangle.
+	Method: GET
+    URL: localhost:8080/driver/all-active
 
-	GET /trip-count?p1_lat={latitude1}&p1_lon={longitude1}&p2_lat={latitude2}&p2_lon={longitude2}
+#### Get a list of all available drivers within 3km for a specific location
 
-	{
-	  "trip_count": 200
-	}
+	Method: GET
+    URL: localhost:8080/driver/all-active-by-distance
+    Headers:
+        distance: 20.0
+        location: 45,56      
 
+[comment]: <> (location is a cardinal point of the format x,y, and distance is in km)
 
-#### Count Trip Start/Stops and Sum Fares within Geo-Rect
-
-This will count all trips which have started and stopped within the specified Geo-Rect and a sum of their fares for the entire known history.
-
-The two points can be any two opposing corners of a rectangle.
-
-	GET /fare-sum?p1_lat={latitude1}&p1_lon={longitude1}&p2_lat={latitude2}&p2_lon={longitude2}
-
-	{
-	  "trip_count": 200,
-	  "fare_sum": 100.00
-	}
+#### Get a specific driver by ID
 
 
-#### Count Concurrent Trips at Specific Time
+	Method: GET
+    URL: localhost:8080/driver/id
+    Headers:
+        driverId: f5d6a17d-8eaf-48ca-bd1e-3bcdf0eeda7c
+[comment]: <> (  the driver is a UUID, you can get samples in `data.sql`)
 
-This will count all distinct trips which were occuring at the specified time.
+### TRIPS
+#### Create a new ‘Trip’ request by assigning a driver to a rider
 
-The timestamp needs to be formatted as ISO 8601.
+	Method: POST
+    URL: localhost:8080/request/create-trip
+    Headers:
+        riderId: afd1f854-8662-491b-abbf-6384f1fb0164
+        driverId: 3093311f-00de-46c9-a4b2-426f4cf16604
+        destinationLocation: 45,56  
 
-	GET /snapshot-count?timestamp=2014-03-15T04:02:08Z
+#### Complete a trip
 
-	{
-	  "trip_count": 300
-	}
+	Method: PUT
+    URL: localhost:8080/request/complete-trip
+    Headers:
+        tripId: bf5e6ba4-93e1-4107-86fa-53c1212701d9
 
+#### Get a list of all active Trips
 
-## Validating the Application
-
-These three commands can be executed to see how quickly the server replies with data.
-
-The third command will require tweaking the timestamp and providing timezone data.
-
-```
-time curl http://localhost:8000/trip-count?p1_lat=37.777058&p1_lng=-122.401729&p2_lat=37.763998&p2_lng=-122.380357
-time curl http://localhost:8000/fare-sum?p1_lat=37.777058&p1_lng=-122.401729&p2_lat=37.763998&p2_lng=-122.380357
-time curl http://localhost:8000/snapshot-count?timestamp=2014-03-16T18:30:00Z
-```
+	Method: GET
+    URL: localhost:8080/trip/all-active-trips
 
 
-## Benchmark Information
+### RIDER
+#### Get a list of all riders
 
-On my Quad 2Ghz/8GB/RAM/SSD Debian laptop, with ~300k rows of event data, the SQL queries usually take between 10ms and 20ms to execute.
+    Method: GET
+    URL: localhost:8080/rider/all
 
+#### Get a specific rider by ID
+
+	Method: GET
+    URL: localhost:8080/rider/id
+    Headers:
+        riderId: f5d6a17d-8eaf-48ca-bd1e-3bcdf0eeda7c
+[comment]: <> (  the riderId is a UUID, you can get samples in `data.sql`)
+
+
+#### For a specific driver, get a list of the 3 closest drivers
+
+    Method: GET
+    URL: localhost:8080/request/get-closed-drivers
+    Headers:
+        riderId: d6c7f25c-e205-4ec6-89ea-a9ccb1ffa2da
 
 ## Known Issues
 
-If you kill the service and restart it, the data will get out of sync with the "real state" of the world.
-So it's best to kill both the server and the emitter, then start the emitter followed by the server.
+This is a simple implementation of how it can work. 
+In an enterprise application there are more things that could be added such:
+    
+    - more validation of the data
+    - making transactions transactional
+    - Better handling of error message
+    - Adding More logging
+    - Better exception handling
+    - Adding toString, equals methods, states and version on models for optimistic locking, deactivation and so forth
+    - More abstraction for common fields
