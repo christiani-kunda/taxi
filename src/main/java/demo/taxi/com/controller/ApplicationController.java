@@ -34,6 +34,9 @@ public class ApplicationController {
 
 	@PostMapping("/create-trip")
 	public Response<Trip> createTrip(@RequestHeader UUID riderId, @RequestHeader UUID driverId, @RequestHeader String destinationLocation){
+		if(!destinationLocation.contains(",")){
+			return new Response<>(new Exception("Wrong format for location"), "Provide location in the format of x,y");
+		}
 		return applicationService.createTrip(riderId, driverId, destinationLocation);
 	}
 

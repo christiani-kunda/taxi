@@ -41,6 +41,9 @@ public class DriverController {
 
 	@GetMapping("/all-active-by-distance")
 	public Response<List<Driver>> findAllAvailableDriversByDistance(@RequestHeader Double distance, @RequestHeader String location){
+		if(!location.contains(",")){
+			return new Response<>(new Exception("Wrong format for location"), "Provide location in the format of x,y");
+		}
 		return driverService.findAllAvailableDriversByDistance(distance, location);
 	}
 }

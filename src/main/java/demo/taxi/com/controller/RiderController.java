@@ -31,7 +31,6 @@ public class RiderController {
 
 	@GetMapping("/id")
 	public Response<Rider> findRiderById(@RequestHeader UUID riderId){
-		System.out.println(riderId);
 		return riderService.findRiderById(riderId);
 	}
 
