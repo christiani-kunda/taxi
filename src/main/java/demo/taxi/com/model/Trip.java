@@ -4,6 +4,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -39,6 +41,7 @@ public class Trip implements Serializable {
 
 	private String destinationLocation;
 
+	@Enumerated(EnumType.STRING)
 	private ETripState state;
 
 	@ManyToOne(fetch = FetchType.EAGER)

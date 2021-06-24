@@ -1,5 +1,6 @@
 package demo.taxi.com.application;
 
+import demo.taxi.com.exception.ObjectNotFoundException;
 import demo.taxi.com.model.Driver;
 import demo.taxi.com.model.EDriverState;
 import demo.taxi.com.model.ETripState;
@@ -70,9 +71,13 @@ public class ApplicationService implements IApplicationService {
 	public Response<Trip> createTrip(UUID riderId, UUID driverId, String destinationLocation) {
 		try{
 			Rider rider = riderService.findRiderById(riderId).getData();
-			assert rider != null;
+			if(rider == null){
+				throw  new ObjectNotFoundException("Rider with id "+riderId+" not found");
+			}
 			Driver driver = driverService.findDriverById(driverId).getData();
-			assert driver != null;
+			if(driver == null){
+				throw  new ObjectNotFoundException("Driver with id " + driverId + " not found");
+			}
 			Trip trip = new Trip();
 			trip.setDriver(driver);
 			trip.setRider(rider);

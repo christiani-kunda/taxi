@@ -4,6 +4,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -38,6 +40,7 @@ public class Driver implements Serializable {
 
 	private String location;
 
+	@Enumerated(EnumType.STRING)
 	private EDriverState state;
 
 	public UUID getId() {

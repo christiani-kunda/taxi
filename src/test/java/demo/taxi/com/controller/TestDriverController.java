@@ -64,6 +64,7 @@ class TestDriverController {
 		assertThat(response.getStatus()).isTrue();
 		assertThat(response.getData().size()).isEqualTo(10);
 	}
+
 	@Test
 	void findAllAvailableDriversByDistance(){
 		HttpHeaders headers = new HttpHeaders();
