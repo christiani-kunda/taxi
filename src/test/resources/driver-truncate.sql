@@ -1,1 +1,0 @@
-truncate table public.driver cascade;
